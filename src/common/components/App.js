@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
+
+import { playerMove } from '../actions';
 
 import X from '../../client/images/x.png';
 import O from '../../client/images/o.png';
@@ -8,7 +11,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      turn: true
+      turn: true,
+      player: null,
     }
 
     this.renderBoard = this.renderBoard.bind(this);
@@ -18,15 +22,17 @@ class App extends Component {
 
   // on click methods
   squareClick(outerIndex, innerIndex) {
-    console.log(this.refs[`${outerIndex}-${innerIndex}`], this.state.turn)
-    if (this.state.turn) {
-      // set the square's html to X
-      this.refs[`${outerIndex}-${innerIndex}`].innerHTML = `<img src=${X} height="50px" width="50px" />`;
-    } else {
-      // set the square's html to O
-      this.refs[`${outerIndex}-${innerIndex}`].innerHTML = `<img src=${O} height="50px" width="50px" />`;
+    // first if statement checks if the space on board has already been played or not.
+    if (this.props.game.board[outerIndex][innerIndex] === "") {
+      if (this.state.turn) {
+        // set the square's html to X
+        this.props.playerMove(outerIndex, innerIndex, `<img src=${X} height="50px" width="50px" />`);
+      } else {
+        // set the square's html to O
+        this.props.playerMove(outerIndex, innerIndex, `<img src=${O} height="50px" width="50px" />`);
+      }
+      this.setState({ turn: !this.state.turn });
     }
-    this.setState({ turn: !this.state.turn });
   }
 
   // render methods
@@ -44,13 +50,14 @@ class App extends Component {
     let innerBoard = [];
     for (let i = 0; i < 9; i++) {
       innerBoard.push(
-        <div key={i} ref={`${outerIndex}-${i}`} className={`inner-square ${outerIndex}-${i}`} onClick={() => {this.squareClick(outerIndex, i)}}></div>
+        <div key={i} className={`inner-square ${outerIndex}-${i}`} dangerouslySetInnerHTML={{ __html: this.props.game.board[outerIndex][i] }} onClick={() => {this.squareClick(outerIndex, i)}}></div>
       );
     }
     return innerBoard;
   }
 
   render() {
+    console.log(this.props.game.board)
     return (
       <div className="app-container">
         <h1>Ultimate Tic-Tac-Toe</h1>
@@ -62,4 +69,8 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return { game: state.game };
+}
+
+export default connect(mapStateToProps, { playerMove })(App);
