@@ -10,11 +10,6 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      turn: true,
-      player: null,
-    }
-
     this.renderBoard = this.renderBoard.bind(this);
     this.renderInnerSquares = this.renderInnerSquares.bind(this);
     this.squareClick = this.squareClick.bind(this);
@@ -24,14 +19,13 @@ class App extends Component {
   squareClick(outerIndex, innerIndex) {
     // first if statement checks if the space on board has already been played or not.
     if (this.props.game.board[outerIndex][innerIndex] === "") {
-      if (this.state.turn) {
+      if (this.props.game.turn) {
         // set the square's html to X
         this.props.playerMove(outerIndex, innerIndex, `<img src=${X} height="50px" width="50px" />`);
       } else {
         // set the square's html to O
         this.props.playerMove(outerIndex, innerIndex, `<img src=${O} height="50px" width="50px" />`);
       }
-      this.setState({ turn: !this.state.turn });
     }
   }
 

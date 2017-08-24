@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { PLAYER_MOVE } from '../actions';
 
 const initialGameState = {
+  turn: true,
   board: []
 };
 
@@ -18,6 +19,7 @@ function gameReducer(state = initialGameState, action) {
     case PLAYER_MOVE:
       return {
         ...state,
+        turn: !state.turn,
         board: state.board.map(
           (board, outerIndex) => outerIndex === action.payload.outerIndex ?
             board.map((inner, innerIndex) => innerIndex === action.payload.innerIndex ?
