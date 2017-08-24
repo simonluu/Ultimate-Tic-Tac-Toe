@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+
+import X from '../../client/images/x.png';
+import O from '../../client/images/o.png';
 
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      turn: true
+    }
 
     this.renderBoard = this.renderBoard.bind(this);
     this.renderInnerSquares = this.renderInnerSquares.bind(this);
@@ -13,7 +18,15 @@ class App extends Component {
 
   // on click methods
   squareClick(outerIndex, innerIndex) {
-    console.log(outerIndex, innerIndex);
+    console.log(this.refs[`${outerIndex}-${innerIndex}`], this.state.turn)
+    if (this.state.turn) {
+      // set the square's html to X
+      this.refs[`${outerIndex}-${innerIndex}`].innerHTML = `<img src=${X} height="50px" width="50px" />`;
+    } else {
+      // set the square's html to O
+      this.refs[`${outerIndex}-${innerIndex}`].innerHTML = `<img src=${O} height="50px" width="50px" />`;
+    }
+    this.setState({ turn: !this.state.turn });
   }
 
   // render methods
@@ -31,7 +44,7 @@ class App extends Component {
     let innerBoard = [];
     for (let i = 0; i < 9; i++) {
       innerBoard.push(
-        <div key={i} className="inner-square" onClick={() => {this.squareClick(outerIndex, i)}}></div>
+        <div key={i} ref={`${outerIndex}-${i}`} className={`inner-square ${outerIndex}-${i}`} onClick={() => {this.squareClick(outerIndex, i)}}></div>
       );
     }
     return innerBoard;
