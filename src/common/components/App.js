@@ -18,7 +18,7 @@ class App extends Component {
   // on click methods
   squareClick(outerIndex, innerIndex) {
     // first if statement checks if the space on board has already been played or not.
-    if (this.props.game.board[outerIndex][innerIndex] === "") {
+    if (this.props.game.board[outerIndex][innerIndex] === "" && (this.props.game.playableBoard === null || this.props.game.playableBoard === outerIndex)) {
       if (this.props.game.turn) {
         // set the square's html to X
         this.props.playerMove(outerIndex, innerIndex, `<img src=${X} height="50px" width="50px" />`);
@@ -51,7 +51,7 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.game.board)
+    console.log(this.props.game)
     return (
       <div className="app-container">
         <h1>Ultimate Tic-Tac-Toe</h1>

@@ -4,6 +4,7 @@ import { PLAYER_MOVE } from '../actions';
 
 const initialGameState = {
   turn: true,
+  playableBoard: null,
   board: []
 };
 
@@ -20,6 +21,7 @@ function gameReducer(state = initialGameState, action) {
       return {
         ...state,
         turn: !state.turn,
+        playableBoard: action.payload.innerIndex,
         board: state.board.map(
           (board, outerIndex) => outerIndex === action.payload.outerIndex ?
             board.map((inner, innerIndex) => innerIndex === action.payload.innerIndex ?
