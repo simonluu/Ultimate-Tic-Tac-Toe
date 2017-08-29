@@ -38,3 +38,11 @@ body {
   width: 50px;
   outline: 1px solid black;
 }
+
+.x-win {
+  outline-color: red;
+}
+
+.o-win {
+  outline-color: blue;
+}
